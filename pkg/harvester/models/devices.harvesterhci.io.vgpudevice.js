@@ -119,6 +119,6 @@ export default class VGpuDevice extends SteveModel {
   }
 
   get vGpuAvailableTypes() {
-    return this.status?.availableTypes ? Object.keys(this.status?.availableTypes) : [];
+    return this.status?.availableTypes ? Object.keys(this.status.availableTypes) : [];
   }
 }
