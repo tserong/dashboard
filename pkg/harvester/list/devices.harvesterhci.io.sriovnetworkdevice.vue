@@ -42,8 +42,8 @@ export default {
         {
           name:        'numVFs',
           label:       'Num VFs',
-          sort:        ['spec.numVFs'],
-          value:       'spec.numVFs',
+          sort:        ['numVFs'],
+          value:       'numVFs',
           formatter:   'HarvesterVFsNum',
           align:       'center',
           labelKey:    'harvester.sriov.numVFs',

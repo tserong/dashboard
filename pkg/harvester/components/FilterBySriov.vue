@@ -1,6 +1,4 @@
 <script>
-import { HCI } from '../types';
-import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import LabeledSelect from '@shell/components/form/LabeledSelect.vue';
 
 export default {
@@ -13,21 +11,19 @@ export default {
       type:     Array,
       required: true,
     },
+    parentSriovOptions: {
+      type:     Array,
+      required: true,
+    },
+
+    parentSriovLabel: {
+      type:     String,
+      required: true,
+    },
   },
 
   data() {
     return { parentSriov: this.$route.query?.parentSriov || null };
-  },
-
-  computed: {
-    parentSriovOptions() {
-      const inStore = this.$store.getters['currentProduct'].inStore;
-      const allSriovs = this.$store.getters[`${ inStore }/all`](HCI.SR_IOV) || [];
-
-      return allSriovs.map((sriov) => {
-        return sriov.id;
-      });
-    }
   },
 
   methods: {
@@ -42,7 +38,7 @@ export default {
           return true;
         }
 
-        const label = row.labels[HCI_ANNOTATIONS.PARENT_SRIOV];
+        const label = row.labels[this.parentSriovLabel];
 
         return label === this.parentSriov;
       });

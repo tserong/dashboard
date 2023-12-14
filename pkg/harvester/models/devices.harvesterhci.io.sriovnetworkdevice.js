@@ -2,12 +2,13 @@ import SteveModel from '@shell/plugins/steve/steve-class';
 import { escapeHtml } from '@shell/utils/string';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 import { NODE } from '@shell/config/types';
+import { HCI } from '../types';
 
 /**
  * Class representing SR-IOV Device resource.
  * @extends SteveModal
  */
-export default class SRIOVDevice extends SteveModel {
+export default class SRIOVGpuDevice extends SteveModel {
   get _availableActions() {
     const out = super._availableActions;
 
@@ -92,5 +93,13 @@ export default class SRIOVDevice extends SteveModel {
     const node = nodes.find(N => N.id === nodeName);
 
     return node?.nameDisplay || '';
+  }
+
+  get numVFs() {
+    return this.spec?.numVFs;
+  }
+
+  get childDevice() {
+    return HCI.PCI_DEVICE;
   }
 }

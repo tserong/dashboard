@@ -5,6 +5,7 @@ import { HCI } from '../../../types';
 import { STATE, SIMPLE_NAME } from '@shell/config/table-headers';
 import { defaultTableSortGenerationFn } from '@shell/components/ResourceTable.vue';
 import { allHash } from '@shell/utils/promise';
+import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 
 export default {
   name: 'ListPciDevices',
@@ -96,6 +97,20 @@ export default {
         this.filterRows = this.rows;
       },
       immediate: true,
+    },
+  },
+
+  computed: {
+    parentSriovOptions() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const allSriovs = this.$store.getters[`${ inStore }/all`](HCI.SR_IOV) || [];
+
+      return allSriovs.map((sriov) => {
+        return sriov.id;
+      });
+    },
+    parentSriovLabel() {
+      return HCI_ANNOTATIONS.PARENT_SRIOV;
     }
   },
 
@@ -161,7 +176,13 @@ export default {
       <span v-else class="text-muted">&mdash;</span>
     </template>
     <template #more-header-middle>
-      <FilterBySriov ref="filterByParentSRIOV" :rows="rows" @change-rows="changeRows" />
+      <FilterBySriov
+        ref="filterByParentSRIOV"
+        :parent-sriov-options="parentSriovOptions"
+        :parent-sriov-label="parentSriovLabel"
+        :rows="rows"
+        @change-rows="changeRows"
+      />
     </template>
   </ResourceTable>
 </template>
