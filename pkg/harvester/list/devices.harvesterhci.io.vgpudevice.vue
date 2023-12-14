@@ -25,15 +25,13 @@ export default {
 
     if (this.hasSchema) {
       try {
-        const inStore = this.$store.getters['currentProduct'].inStore;
-
         const hash = await allHash({
           vGpuDevices: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VGPU_DEVICE }),
           addons:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
         });
 
-        const hasPCIAddon = hash.addons.find(addon => addon.name === ADD_ONS.PCI_DEVICE_CONTROLLER)?.spec?.enabled === true;
-        const hasSriovgpuAddon = hash.addons.find(addon => addon.name === ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER)?.spec?.enabled === true;
+        this.hasPCIAddon = hash.addons.find(addon => addon.name === ADD_ONS.PCI_DEVICE_CONTROLLER)?.spec?.enabled === true;
+        this.hasSriovgpuAddon = hash.addons.find(addon => addon.name === ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER)?.spec?.enabled === true;
 
         this.enabledVGpu = hasPCIAddon && hasSriovgpuAddon;
       } catch (e) {}
@@ -42,10 +40,13 @@ export default {
 
   data() {
     return {
-      hasAddonSchema: false,
-      enabledVGpu:    false,
-      schema:         null,
-      to:             `${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER }?mode=edit`
+      hasAddonSchema:    false,
+      hasPCIAddon:       false,
+      hasSriovgpuAddon:  false,
+      hasSRIOVGPUSchema: false,
+      schema:            null,
+      toVGpuAddon:       `${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER }?mode=edit`,
+      toPciAddon:        `${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.PCI_DEVICE_CONTROLLER }?mode=edit`
     };
   },
 
@@ -75,15 +76,29 @@ export default {
       {{ t('harvester.vgpu.noPermission') }}
     </Banner>
   </div>
-  <VGpuDeviceList v-else-if="hasSchema && enabledVGpu" :devices="rows" :schema="schema" />
-  <div v-else>
-    <Banner color="warning">
+  <div v-else-if="!hasSriovgpuAddon || !hasPCIAddon">
+    <Banner
+      v-if="!hasSriovgpuAddon"
+      color="warning"
+    >
       <MessageLink
-        :to="to"
+        :to="toVGpuAddon"
         prefix-label="harvester.vgpu.goSetting.prefix"
         middle-label="harvester.vgpu.goSetting.middle"
         suffix-label="harvester.vgpu.goSetting.suffix"
       />
     </Banner>
+    <Banner
+      v-if="!hasPCIAddon"
+      color="warning"
+    >
+      <MessageLink
+        :to="toPciAddon"
+        prefix-label="harvester.pci.goSetting.prefix"
+        middle-label="harvester.pci.goSetting.middle"
+        suffix-label="harvester.pci.goSetting.suffix"
+      />
+    </Banner>
   </div>
+  <VGpuDeviceList v-else-if="hasSchema" :devices="rows" :schema="schema" />
 </template>

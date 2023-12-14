@@ -1239,7 +1239,7 @@ harvester:
     vGpuDevices: VGpu Devices
     showMore: Show More
     parentSriovgpu: Filter By Parent SR-IOVGpu
-    noPermission: Please contact system admin to enable the SR-IOV Gpu devices first.
+    noPermission: Please contact system admin to add Harvester addons first
     goSetting:
       prefix: The nvidia-driver-toolkit addon is not enabled, click
       middle: here
@@ -1247,11 +1247,11 @@ harvester:
 
   vgpu:
     label: VGpu Devices
-    noPermission: Please contact system admin to enable the SR-IOV Gpu devices first
+    noPermission: Please contact system admin to add Harvester addons first
     goSetting:
       prefix: The nvidia-driver-toolkit addon is not enabled, click
       middle: here
-      suffix: to enable it to manage your SR-IOV Gpu devices.
+      suffix: to enable it to manage your vGpu devices.
     enableGroup: Enable Group
     disableGroup: Disable Group
     enable:
