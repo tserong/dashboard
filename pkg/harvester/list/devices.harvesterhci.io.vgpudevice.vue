@@ -33,7 +33,10 @@ export default {
         this.hasPCIAddon = hash.addons.find(addon => addon.name === ADD_ONS.PCI_DEVICE_CONTROLLER)?.spec?.enabled === true;
         this.hasSriovgpuAddon = hash.addons.find(addon => addon.name === ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER)?.spec?.enabled === true;
 
-        this.enabledVGpu = hasPCIAddon && hasSriovgpuAddon;
+        this.hasSRIOVGPUSchema = !!this.$store.getters[`${ inStore }/schemaFor`](HCI.SR_IOVGPU_DEVICE);
+        if (this.hasSRIOVGPUSchema) {
+          await this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SR_IOVGPU_DEVICE });
+        }
       } catch (e) {}
     }
   },
@@ -57,9 +60,14 @@ export default {
 
     rows() {
       const inStore = this.$store.getters['currentProduct'].inStore;
-      const rows = this.$store.getters[`${ inStore }/all`](HCI.VGPU_DEVICE);
+      const vGpuDevices = this.$store.getters[`${ inStore }/all`](HCI.VGPU_DEVICE) || [];
+      const srioVGpuDevices = this.$store.getters[`${ inStore }/all`](HCI.SR_IOVGPU_DEVICE) || [];
 
-      return rows;
+      if (this.hasSRIOVGPUSchema) {
+        return vGpuDevices.filter(device => !!srioVGpuDevices.find(s => s.isEnabled && s.spec?.nodeName === device.spec?.nodeName));
+      }
+
+      return vGpuDevices;
     }
   },
 
