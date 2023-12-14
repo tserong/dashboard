@@ -46,4 +46,5 @@ export const HCI = {
   VM_INSUFFICIENT:              'harvesterhci.io/insufficient-resource-quota',
   NODE_NTP_SYNC_STATUS:         'node.harvesterhci.io/ntp-service',
   PARENT_SRIOV:                 'harvesterhci.io/parent-sriov-network-device',
+  PARENT_SRIOV_GPU:             'harvesterhci.io/parentSRIOVGPUDevice',
 };
