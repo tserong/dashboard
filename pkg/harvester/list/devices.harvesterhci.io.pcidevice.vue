@@ -6,6 +6,7 @@ import Banner from '@components/Banner/Banner.vue';
 import Loading from '@shell/components/Loading';
 import MessageLink from '@shell/components/MessageLink';
 import DeviceList from '../edit/kubevirt.io.virtualmachine/VirtualMachinePciDevices/DeviceList';
+import { ADD_ONS } from '../config/harvester-map';
 
 const schema = {
   id:         HCI.PCI_DEVICE,
@@ -39,7 +40,7 @@ export default {
           addons:    this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
         });
 
-        this.enabledPCI = hash.addons.find(addon => addon.name === 'pcidevices-controller')?.spec?.enabled === true;
+        this.enabledPCI = hash.addons.find(addon => addon.name === ADD_ONS.PCI_DEVICE_CONTROLLER)?.spec?.enabled === true;
 
         this.$store.dispatch('type-map/configureType', { match: HCI.PCI_DEVICE, isCreatable: this.enabledPCI });
       } catch (e) {}
@@ -50,7 +51,7 @@ export default {
     return {
       enabledPCI: false,
       hasSchema:  false,
-      to:         `${ HCI.ADD_ONS }/harvester-system/pcidevices-controller?mode=edit`
+      to:         `${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.PCI_DEVICE_CONTROLLER }?mode=edit`
     };
   },
 
