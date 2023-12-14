@@ -55,9 +55,10 @@ export const FLOW_TYPE = {
 };
 
 export const ADD_ONS = {
-  HARVESTER_SEEDER:      'harvester-seeder',
-  PCI_DEVICE_CONTROLLER: 'pci-device-controller',
-  RANCHER_LOGGING:       'rancher-logging',
-  RANCHER_MONITORING:    'rancher-monitoring',
-  VM_IMPORT_CONTROLLER:  'vm-import-controller',
+  HARVESTER_SEEDER:                 'harvester-seeder',
+  PCI_DEVICE_CONTROLLER:            'pcidevices-controller',
+  NVIDIA_DRIVER_TOOLKIT_CONTROLLER: 'nvidia-driver-toolkit',
+  RANCHER_LOGGING:                  'rancher-logging',
+  RANCHER_MONITORING:               'rancher-monitoring',
+  VM_IMPORT_CONTROLLER:             'vm-import-controller',
 };
