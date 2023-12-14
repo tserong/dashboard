@@ -1123,8 +1123,9 @@ harvester:
       rancherVersion: Rancher Version
       password: Bootstrap Password
     switchFailed: "{action} {name} failed!"
-      
-
+    nvidiaDriverToolkit:
+      titles:
+        basic: Controller
 
   loadBalancer:
     label: Load Balancers
