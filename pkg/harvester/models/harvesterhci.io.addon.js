@@ -1,6 +1,8 @@
 import HarvesterResource from './harvester';
 import { HCI as HCI_ANNOTATIONS } from '../config/labels-annotations';
 import jsyaml from 'js-yaml';
+import startCase from 'lodash/startCase';
+
 export default class HciAddonConfig extends HarvesterResource {
   get availableActions() {
     const out = super._availableActions;
@@ -92,7 +94,7 @@ export default class HciAddonConfig extends HarvesterResource {
     }
 
     if (out.startsWith('Addon')) {
-      return out.replace('Addon', '');
+      return startCase(out.replace('Addon', ''));
     }
 
     return out;
