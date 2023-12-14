@@ -1,6 +1,5 @@
 <script>
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
-import { HCI } from '../types';
 
 export default {
   name: 'HarvesterVFAddress',
@@ -27,7 +26,7 @@ export default {
         const q = `${ this.row.spec?.nodeName }-${ prefix }${ middle }${ suffix.replace('.', '') }`;
         const to = {
           name:   `${ HARVESTER_PRODUCT }-c-cluster-resource`,
-          params: { cluster: this.$store.getters['clusterId'], resource: HCI.PCI_DEVICE },
+          params: { cluster: this.$store.getters['clusterId'], resource: this.row.childDevice },
           query:  { q }
         };
 
