@@ -187,6 +187,7 @@ harvester:
     advanced: Advanced Options
     accessCredentials: Access Credentials
     pciDevices: PCI Devices
+    vGpuDevices: VGpu Devices
     vmScheduling: VM Scheduling
     instanceLabel: Instance Labels
   fields:
@@ -1244,6 +1245,24 @@ harvester:
       middle: here
       suffix: to enable it to manage your SR-IOV Gpu devices.
 
+  vgpu:
+    label: VGpu Devices
+    noPermission: Please contact system admin to enable the SR-IOV Gpu devices first
+    goSetting:
+      prefix: The nvidia-driver-toolkit addon is not enabled, click
+      middle: here
+      suffix: to enable it to manage your SR-IOV Gpu devices.
+    enableGroup: Enable Group
+    disableGroup: Disable Group
+    enable:
+      title: Select VGpu
+      type: Type
+    available: Available Devices
+    compatibleNodes: Compatible Nodes
+    impossibleSelection: 'There are no hosts with all of the selected devices.'
+    howToUseDevice: 'Use the table below to enable VGpu devices you want to use in this VM.'
+    deviceInTheSameHost: 'You can only select devices on the same host.'
+
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork: 
       label: Target Cluster Network
@@ -1443,6 +1462,12 @@ typeLabel:
     {count, plural,
       one { SR-IOV Gpu Device }
       other { SR-IOV Gpu Devices }
+    }
+
+  devices.harvesterhci.io.vgpudevice: |-
+    {count, plural,
+      one { VGpu Device }
+      other { VGpu Devices }
     }
 
   harvesterhci.io.secret: |-

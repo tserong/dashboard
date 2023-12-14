@@ -1,0 +1,89 @@
+<script>
+import { HCI } from '../types';
+import { allHash } from '@shell/utils/promise';
+import Banner from '@components/Banner/Banner.vue';
+import Loading from '@shell/components/Loading';
+import MessageLink from '@shell/components/MessageLink';
+import VGpuDeviceList from '../edit/kubevirt.io.virtualmachine/VirtualMachineVGpuDevices/VGpuDeviceList';
+import { ADD_ONS } from '../config/harvester-map';
+
+export default {
+  name: 'ListVGpuDevices',
+
+  components: {
+    Banner,
+    Loading,
+    MessageLink,
+    VGpuDeviceList
+  },
+
+  async fetch() {
+    const inStore = this.$store.getters['currentProduct'].inStore;
+
+    this.schema = this.$store.getters[`${ inStore }/schemaFor`](HCI.VGPU_DEVICE);
+    this.hasAddonSchema = this.$store.getters[`${ inStore }/schemaFor`](HCI.ADD_ONS);
+
+    if (this.hasSchema) {
+      try {
+        const inStore = this.$store.getters['currentProduct'].inStore;
+
+        const hash = await allHash({
+          vGpuDevices: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VGPU_DEVICE }),
+          addons:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.ADD_ONS }),
+        });
+
+        const hasPCIAddon = hash.addons.find(addon => addon.name === ADD_ONS.PCI_DEVICE_CONTROLLER)?.spec?.enabled === true;
+        const hasSriovgpuAddon = hash.addons.find(addon => addon.name === ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER)?.spec?.enabled === true;
+
+        this.enabledVGpu = hasPCIAddon && hasSriovgpuAddon;
+      } catch (e) {}
+    }
+  },
+
+  data() {
+    return {
+      hasAddonSchema: false,
+      enabledVGpu:    false,
+      schema:         null,
+      to:             `${ HCI.ADD_ONS }/harvester-system/${ ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER }?mode=edit`
+    };
+  },
+
+  computed: {
+    hasSchema() {
+      return !!this.schema;
+    },
+
+    rows() {
+      const inStore = this.$store.getters['currentProduct'].inStore;
+      const rows = this.$store.getters[`${ inStore }/all`](HCI.VGPU_DEVICE);
+
+      return rows;
+    }
+  },
+
+  typeDisplay() {
+    return this.$store.getters['type-map/labelFor'](this.schema, 99);
+  }
+};
+</script>
+
+<template>
+  <Loading v-if="$fetchState.pending" />
+  <div v-else-if="!hasAddonSchema">
+    <Banner color="warning">
+      {{ t('harvester.vgpu.noPermission') }}
+    </Banner>
+  </div>
+  <VGpuDeviceList v-else-if="hasSchema && enabledVGpu" :devices="rows" :schema="schema" />
+  <div v-else>
+    <Banner color="warning">
+      <MessageLink
+        :to="to"
+        prefix-label="harvester.vgpu.goSetting.prefix"
+        middle-label="harvester.vgpu.goSetting.middle"
+        suffix-label="harvester.vgpu.goSetting.suffix"
+      />
+    </Banner>
+  </div>
+</template>
