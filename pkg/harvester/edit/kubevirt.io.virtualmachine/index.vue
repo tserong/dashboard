@@ -23,6 +23,7 @@ import NodeScheduling from '@shell/components/form/NodeScheduling';
 import PodAffinity from '@shell/components/form/PodAffinity';
 import AccessCredentials from './VirtualMachineAccessCredentials';
 import PciDevices from './VirtualMachinePciDevices/index';
+import VirtualMachineVGpuDevices from './VirtualMachineVGpuDevices/index';
 import RestartVMDialog from '../../dialog/RestartVMDialog';
 import KeyValue from '@shell/components/form/KeyValue';
 
@@ -63,6 +64,7 @@ export default {
     PciDevices,
     RestartVMDialog,
     UnitInput,
+    VirtualMachineVGpuDevices,
     KeyValue,
   },
 
@@ -563,14 +565,18 @@ export default {
         <PciDevices :mode="mode" :value="spec.template.spec" :vm="value" />
       </Tab>
 
-      <Tab v-if="isEdit" :label="t('harvester.tab.accessCredentials')" name="accessCredentials" :weight="-6">
+      <Tab v-if="enabledSriovgpu" :label="t('harvester.tab.vGpuDevices')" name="vGpuDevices" :weight="-6">
+        <VirtualMachineVGpuDevices :mode="mode" :value="spec.template.spec" :vm="value" />
+      </Tab>
+
+      <Tab v-if="isEdit" :label="t('harvester.tab.accessCredentials')" name="accessCredentials" :weight="-7">
         <AccessCredentials v-model="accessCredentials" :mode="mode" :resource="value" :is-qemu-installed="isQemuInstalled" />
       </Tab>
 
       <Tab
         name="advanced"
         :label="t('harvester.tab.advanced')"
-        :weight="-7"
+        :weight="-8"
       >
         <div class="row mb-20">
           <div class="col span-6">
