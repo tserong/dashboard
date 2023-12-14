@@ -1230,6 +1230,20 @@ harvester:
     showMore: Show More
     parentSriov: Filter By Parent SR-IOV
 
+  sriovgpu:
+    label: SR-IOV Gpu Devices
+    nodeName: Node
+    numVFs: Number Of Virtual Functions
+    vfAddresses: Virtual Functions Addresses
+    vGpuDevices: VGpu Devices
+    showMore: Show More
+    parentSriovgpu: Filter By Parent SR-IOVGpu
+    noPermission: Please contact system admin to enable the SR-IOV Gpu devices first.
+    goSetting:
+      prefix: The nvidia-driver-toolkit addon is not enabled, click
+      middle: here
+      suffix: to enable it to manage your SR-IOV Gpu devices.
+
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork: 
       label: Target Cluster Network
@@ -1424,6 +1438,13 @@ typeLabel:
       one { SR-IOV Network Device }
       other { SR-IOV Network Devices }
     }
+
+  devices.harvesterhci.io.sriovgpudevice: |-
+    {count, plural,
+      one { SR-IOV Gpu Device }
+      other { SR-IOV Gpu Devices }
+    }
+
   harvesterhci.io.secret: |-
     {count, plural,
       one { Secret }

@@ -11,7 +11,7 @@ import { allHash } from '@shell/utils/promise';
 import { randomStr } from '@shell/utils/string';
 import { base64Decode } from '@shell/utils/crypto';
 import { formatSi, parseSi } from '@shell/utils/units';
-import { SOURCE_TYPE, ACCESS_CREDENTIALS } from '../../config/harvester-map';
+import { ADD_ONS, SOURCE_TYPE, ACCESS_CREDENTIALS } from '../../config/harvester-map';
 import { _CLONE, _CREATE, _VIEW } from '@shell/config/query-params';
 import {
   PV, PVC, STORAGE_CLASS, NODE, SECRET, CONFIG_MAP, NETWORK_ATTACHMENT, NAMESPACE, LONGHORN
@@ -116,9 +116,14 @@ export default {
 
     const res = await allHash(hash);
 
-    const hasPCISchema = this.$store.getters[`${ inStore }/schemaFor`](HCI.PCI_DEVICE);
+    const hasPCISchema = !!this.$store.getters[`${ inStore }/schemaFor`](HCI.PCI_DEVICE);
+    const hasSRIOVGPUSchema = !!this.$store.getters[`${ inStore }/schemaFor`](HCI.SR_IOVGPU_DEVICE);
 
-    this.enabledPCI = res.addons.find(addon => addon.name === 'pcidevices-controller')?.spec?.enabled === true && hasPCISchema;
+    const hasPCIAddon = res.addons.find(addon => addon.name === ADD_ONS.PCI_DEVICE_CONTROLLER)?.spec?.enabled === true;
+    const hasSriovgpuAddon = res.addons.find(addon => addon.name === ADD_ONS.NVIDIA_DRIVER_TOOLKIT_CONTROLLER)?.spec?.enabled === true;
+
+    this.enabledPCI = hasPCIAddon && hasPCISchema;
+    this.enabledSriovgpu = hasSriovgpuAddon && hasPCIAddon && hasSRIOVGPUSchema;
   },
 
   data() {
@@ -155,6 +160,7 @@ export default {
       saveUserDataAsClearText:       false,
       saveNetworkDataAsClearText:    false,
       enabledPCI:                    false,
+      enabledSriovgpu:               false,
       immutableMode:                 this.realMode === _CREATE ? _CREATE : _VIEW,
       terminationGracePeriodSeconds: '',
     };
