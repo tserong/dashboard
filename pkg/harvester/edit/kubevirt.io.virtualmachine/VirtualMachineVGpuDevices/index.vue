@@ -65,7 +65,7 @@ export default {
     selectedDevices(neu) {
       const formatted = neu.map((selectedDevice) => {
         const deviceCRD = this.enabledDevices.find(device => device.metadata.name === selectedDevice);
-        const deviceName = deviceCRD?.status?.configureVGPUTypeName;
+        const deviceName = `nvidia.com/${ deviceCRD?.status?.configureVGPUTypeName?.replace(/\s+/g, '_') }`;
 
         return {
           deviceName,
@@ -73,7 +73,7 @@ export default {
         };
       });
 
-      set(this.value.domain.devices, 'hostDevices', formatted);
+      set(this.value.domain.devices, 'gpus', formatted);
     }
   },
 
