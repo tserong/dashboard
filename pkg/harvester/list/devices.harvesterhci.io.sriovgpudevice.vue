@@ -87,16 +87,6 @@ export default {
           sort:  ['spec.address']
         },
         {
-          name:        'numVFs',
-          label:       'Num VFs',
-          sort:        ['numVFs'],
-          value:       'numVFs',
-          formatter:   'HarvesterVFsNum',
-          align:       'center',
-          labelKey:    'harvester.sriovgpu.numVFs',
-          dashIfEmpty: true,
-        },
-        {
           name:        'vfAddresses',
           label:       'VF Addresses',
           labelKey:    'harvester.sriovgpu.vfAddresses',
