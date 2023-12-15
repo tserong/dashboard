@@ -180,6 +180,7 @@ export default {
         ref="filterByParentSRIOV"
         :parent-sriov-options="parentSriovOptions"
         :parent-sriov-label="parentSriovLabel"
+        :label="t('harvester.sriov.parentSriov')"
         :rows="rows"
         @change-rows="changeRows"
       />

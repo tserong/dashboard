@@ -170,7 +170,7 @@ export default {
         <div class="col span-6">
           <LabeledSelect
             v-model="selectedDevices"
-            label="Available vGpu Devices"
+            label="Available vGPU Devices"
             searchable
             multiple
             taggable
