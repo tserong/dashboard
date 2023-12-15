@@ -37,7 +37,7 @@ export default {
       SIMPLE_NAME,
       {
         name:  'vGPUTypeName',
-        label: 'VGpu Type',
+        label: 'vGPU Type',
         value: 'spec.vGPUTypeName',
         sort:  ['spec.vGPUTypeName']
       },
@@ -120,6 +120,7 @@ export default {
         ref="filterByParentSRIOV"
         :parent-sriov-options="parentSriovOptions"
         :parent-sriov-label="parentSriovLabel"
+        :label="t('harvester.sriovgpu.parentSriov')"
         :rows="rows"
         @change-rows="changeRows"
       />

@@ -98,7 +98,7 @@ export default {
         },
         {
           name:        'vGpuDevices',
-          label:       'VGpu Devices',
+          label:       'vGPU Devices',
           labelKey:    'harvester.sriovgpu.vGpuDevices',
           sort:        ['status.vGPUDevices'],
           value:       'status.vGPUDevices',

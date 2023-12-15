@@ -91,7 +91,7 @@ export default class SRIOVDevice extends SteveModel {
         this.$dispatch('growl/error', {
           title:   this.t('generic.notification.title.error', { name: escapeHtml(this.metadata.name) }),
           message: `
-            Cannot disable ${ this.metadata.name }, following vGpu devices are enabled:
+            Cannot disable ${ this.metadata.name }, following vGPU devices are enabled:
             [${ vGpuDevicesEnabled.join(', ') }]
           `,
         }, { root: true });

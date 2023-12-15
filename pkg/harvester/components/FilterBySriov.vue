@@ -11,6 +11,7 @@ export default {
       type:     Array,
       required: true,
     },
+
     parentSriovOptions: {
       type:     Array,
       required: true,
@@ -20,6 +21,12 @@ export default {
       type:     String,
       required: true,
     },
+
+    label: {
+      type:     String,
+      required: true,
+    },
+
   },
 
   data() {
@@ -72,7 +79,7 @@ export default {
       <slot name="header">
         <button ref="actionDropDown" class="btn bg-primary mr-10">
           <slot name="title">
-            {{ t('harvester.sriov.parentSriov') }}
+            {{ label }}
           </slot>
         </button>
       </slot>
@@ -84,7 +91,7 @@ export default {
               v-model="parentSriov"
               :options="parentSriovOptions"
               :searchable="true"
-              :label="t('harvester.sriov.parentSriov')"
+              :label="label"
             />
           </div>
         </div>

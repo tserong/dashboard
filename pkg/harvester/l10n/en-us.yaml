@@ -187,7 +187,7 @@ harvester:
     advanced: Advanced Options
     accessCredentials: Access Credentials
     pciDevices: PCI Devices
-    vGpuDevices: VGpu Devices
+    vGpuDevices: VGPU Devices
     vmScheduling: VM Scheduling
     instanceLabel: Instance Labels
   fields:
@@ -1233,35 +1233,35 @@ harvester:
     parentSriov: Filter By Parent SR-IOV
 
   sriovgpu:
-    label: SR-IOV Gpu Devices
+    label: SR-IOV GPU Devices
     nodeName: Node
     numVFs: Number Of Virtual Functions
     vfAddresses: Virtual Functions Addresses
-    vGpuDevices: VGpu Devices
+    vGpuDevices: vGPU Devices
     showMore: Show More
-    parentSriovgpu: Filter By Parent SR-IOVGpu
+    parentSriov: Filter By Parent SR-IOV GPU
     noPermission: Please contact system admin to add Harvester addons first
     goSetting:
       prefix: The nvidia-driver-toolkit addon is not enabled, click
       middle: here
-      suffix: to enable it to manage your SR-IOV Gpu devices.
+      suffix: to enable it to manage your SR-IOV GPU devices.
 
   vgpu:
-    label: VGpu Devices
+    label: vGPU Devices
     noPermission: Please contact system admin to add Harvester addons first
     goSetting:
       prefix: The nvidia-driver-toolkit addon is not enabled, click
       middle: here
-      suffix: to enable it to manage your vGpu devices.
+      suffix: to enable it to manage your vGPU devices.
     enableGroup: Enable Group
     disableGroup: Disable Group
     enable:
-      title: Select VGpu
+      title: Select vGPU
       type: Type
     available: Available Devices
     compatibleNodes: Compatible Nodes
     impossibleSelection: 'There are no hosts with all of the selected devices.'
-    howToUseDevice: 'Use the table below to enable VGpu devices you want to use in this VM.'
+    howToUseDevice: 'Use the table below to enable vGPU devices you want to use in this VM.'
     deviceInTheSameHost: 'You can only select devices on the same host.'
 
   harvesterVlanConfigMigrateDialog:
@@ -1461,14 +1461,14 @@ typeLabel:
 
   devices.harvesterhci.io.sriovgpudevice: |-
     {count, plural,
-      one { SR-IOV Gpu Device }
-      other { SR-IOV Gpu Devices }
+      one { SR-IOV GPU Device }
+      other { SR-IOV GPU Devices }
     }
 
   devices.harvesterhci.io.vgpudevice: |-
     {count, plural,
-      one { VGpu Device }
-      other { VGpu Devices }
+      one { vGPU Device }
+      other { vGPU Devices }
     }
 
   harvesterhci.io.secret: |-
