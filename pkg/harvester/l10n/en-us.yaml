@@ -780,6 +780,20 @@ harvester:
       replaceExisting: Replace existing
       virtualMachineName: Virtual Machine Name
     matchTarget: The current backup target does not match the existing one.
+    progress: 
+      details: Backup details
+      tooltip:
+        starting: Backup initiating
+        progress: Backup in progress
+        complete: Backup completed
+
+  restore:
+    progress:
+      details: Restore details
+      tooltip:
+        starting: Restore initiating
+        progress: Restore in progress
+        complete: Restore completed
 
   network:
     label: VM Networks
