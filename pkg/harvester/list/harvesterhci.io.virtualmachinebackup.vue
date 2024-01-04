@@ -28,7 +28,6 @@ export default {
       vms:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
       settings: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }),
       rows:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BACKUP }),
-      restores: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
     });
 
     this.rows = hash.rows;
