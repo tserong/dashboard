@@ -28,6 +28,7 @@ export default {
       vms:      this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.VM }),
       settings: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.SETTING }),
       rows:     this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.BACKUP }),
+      restores: this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.RESTORE }),
     });
 
     this.rows = hash.rows;
@@ -113,6 +114,14 @@ export default {
           value:     'status.readyToUse',
           align:     'left',
           formatter: 'Checked',
+        },
+        {
+          name:      'backupProgress',
+          labelKey:  'tableHeaders.progress',
+          value:     'backupProgress',
+          align:     'left',
+          formatter: 'HarvesterBackupProgressBar',
+          width:     200,
         },
         AGE
       ];
@@ -212,6 +221,6 @@ export default {
           </span>
         </td>
       </template>
-    </resourcetable>
+    </ResourceTable>
   </div>
 </template>
