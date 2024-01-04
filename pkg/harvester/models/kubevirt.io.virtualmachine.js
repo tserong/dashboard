@@ -661,28 +661,43 @@ export default class VirtVm extends HarvesterResource {
     return get(this, 'spec.volumeClaimTemplates') === null ? [] : this.spec.volumeClaimTemplates;
   }
 
-  restoreState(vmResource = this, id) {
-    if (!id) {
-      id = `${ this.metadata.namespace }/${ get(
-        vmResource,
-        `metadata.annotations."${ HCI_ANNOTATIONS.RESTORE_NAME }"`
-      ) }`;
-    }
+  get restoreResource() {
+    const id = `${ this.metadata.namespace }/${ get(
+      this,
+      `metadata.annotations."${ HCI_ANNOTATIONS.RESTORE_NAME }"`
+    ) }`;
+
     const inStore = this.productInStore;
 
     const allRestore = this.$rootGetters[`${ inStore }/all`](HCI.RESTORE);
 
-    const restoreResource = allRestore.find(O => O.id === id);
+    return allRestore.find(O => O.id === id);
+  }
 
-    if (!restoreResource) {
+  get restoreProgress() {
+    const status = this.restoreResource?.status;
+
+    if (status !== undefined) {
+      return {
+        type:       'restore',
+        percentage: status?.progress || 0,
+        details:    { volumes: status?.restores || [] }
+      };
+    }
+
+    return {};
+  }
+
+  get restoreState() {
+    if (!this.restoreResource) {
       return true;
     }
 
-    return restoreResource?.isComplete;
+    return this.restoreResource?.isComplete;
   }
 
   get actualState() {
-    if (!this.restoreState()) {
+    if (!this.restoreState) {
       return 'Restoring';
     }
 

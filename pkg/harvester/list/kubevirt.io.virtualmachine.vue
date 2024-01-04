@@ -49,6 +49,14 @@ export const VM_HEADERS = [
     labelKey:  'tableHeaders.ipAddress'
   },
   {
+    name:      'restoreProgress',
+    labelKey:  'tableHeaders.restore',
+    value:     'restoreProgress',
+    align:     'left',
+    formatter: 'HarvesterBackupProgressBar',
+    width:     200,
+  },
+  {
     ...AGE,
     sort: 'metadata.creationTimestamp:desc',
   }
