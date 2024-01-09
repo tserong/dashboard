@@ -45,7 +45,7 @@ export default {
       this[key] = res[key];
     }
 
-    (this.value?.domain?.devices?.hostDevices || []).forEach(({ name }) => {
+    (this.value?.domain?.devices?.gpus || []).forEach(({ name }) => {
       if (this.enabledDevices.find(device => device?.metadata?.name === name)) {
         this.selectedDevices.push(name);
       }
