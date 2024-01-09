@@ -9,7 +9,6 @@ import HarvesterMemoryUsed from '../../formatters/HarvesterMemoryUsed';
 import HarvesterStorageUsed from '../../formatters/HarvesterStorageUsed';
 
 const COMPLETE = 'complete';
-const NONE = 'none';
 const PROMOTE_RESTART = 'promoteRestart';
 const PROMOTE_SUCCEED = 'promoteSucceed';
 
@@ -119,7 +118,15 @@ export default {
     },
 
     nodeType() {
-      return this.value.isMaster ? this.t('harvester.host.detail.management') : this.t('harvester.host.detail.compute');
+      if (this.value.isEtcd) {
+        return this.t('harvester.host.detail.etcd');
+      }
+
+      if (this.value.isMaster) {
+        return this.t('harvester.host.detail.management');
+      }
+
+      return this.t('harvester.host.detail.compute');
     },
 
     lastUpdateTime() {
@@ -127,16 +134,17 @@ export default {
     },
 
     nodeRoleState() {
-      const isExistRoleStatus = this.value.metadata?.labels?.[HCI_ANNOTATIONS.NODE_ROLE_MASTER] !== undefined || this.value.metadata?.labels?.[HCI_ANNOTATIONS.NODE_ROLE_CONTROL_PLANE] !== undefined;
-      const promoteStatus = this.value.metadata?.annotations?.[HCI_ANNOTATIONS.PROMOTE_STATUS] || NONE;
+      if (!this.value.isEtcd) {
+        const promoteStatus = this.value.metadata?.annotations?.[HCI_ANNOTATIONS.PROMOTE_STATUS];
 
-      if (!isExistRoleStatus && promoteStatus === COMPLETE) {
-        return PROMOTE_RESTART;
-      } else if (isExistRoleStatus && promoteStatus === COMPLETE) {
-        return PROMOTE_SUCCEED;
+        if (promoteStatus === COMPLETE) {
+          const isExistRoleStatus = this.value.metadata?.labels?.[HCI_ANNOTATIONS.NODE_ROLE_MASTER] !== undefined || this.value.metadata?.labels?.[HCI_ANNOTATIONS.NODE_ROLE_CONTROL_PLANE] !== undefined;
+
+          return this.t(`harvester.host.promote.${ isExistRoleStatus ? PROMOTE_SUCCEED : PROMOTE_RESTART }`);
+        }
       }
 
-      return promoteStatus;
+      return null;
     },
 
     hasMetricNodeSchema() {
@@ -194,8 +202,11 @@ export default {
           <LabelValue :name="t('harvester.host.detail.role')">
             <template #value>
               {{ nodeType }}
-              <span class="text-warning ml-20">
-                {{ t(`harvester.host.promote.${nodeRoleState}`) }}
+              <span
+                v-if="nodeRoleState"
+                class="text-warning ml-20"
+              >
+                {{ nodeRoleState }}
               </span>
             </template>
           </LabelValue>
