@@ -345,6 +345,7 @@ harvester:
       manufacturer: Manufacturer
       serialNumber: Serial Number
       model: Model
+      etcd: Etcd Node
     enableMaintenance:
       title: Enable Maintenance Mode
       protip: The operation will migrate all virtual machines on this node to other nodes.

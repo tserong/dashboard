@@ -292,7 +292,11 @@ export default class HciNode extends HarvesterResource {
   }
 
   get isCordoned() {
-    return this.isUnSchedulable;
+    return this.isUnSchedulable && !this.isEtcd;
+  }
+
+  get isEtcd() {
+    return this.metadata?.labels?.[HCI_ANNOTATIONS.NODE_ROLE_ETCD];
   }
 
   get isEnteringMaintenance() {
