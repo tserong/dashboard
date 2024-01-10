@@ -49,14 +49,6 @@ export const VM_HEADERS = [
     labelKey:  'tableHeaders.ipAddress'
   },
   {
-    name:      'restoreProgress',
-    labelKey:  'tableHeaders.restore',
-    value:     'restoreProgress',
-    align:     'left',
-    formatter: 'HarvesterBackupProgressBar',
-    width:     200,
-  },
-  {
     ...AGE,
     sort: 'metadata.creationTimestamp:desc',
   }
@@ -120,6 +112,14 @@ export default {
 
   computed: {
     headers() {
+      const restoreCol = {
+        name:      'restoreProgress',
+        labelKey:  'tableHeaders.restore',
+        value:     'restoreProgress',
+        align:     'left',
+        formatter: 'HarvesterBackupProgressBar',
+        width:     200,
+      };
       const nodeCol = {
         name:      'node',
         label:     'Node',
@@ -135,6 +135,10 @@ export default {
         cols.splice(-1, 0, nodeCol);
       }
 
+      if (this.hasRestoredVMs) {
+        cols.splice(-1, 0, restoreCol);
+      }
+
       return cols;
     },
 
@@ -142,6 +146,10 @@ export default {
       const matchVMIs = this.allVMIs.filter(VMI => !this.allVMs.find(VM => VM.id === VMI.id));
 
       return [...this.allVMs, ...matchVMIs];
+    },
+
+    hasRestoredVMs() {
+      return !!this.rows.find(r => !!r.restoreResource);
     }
   },
 
