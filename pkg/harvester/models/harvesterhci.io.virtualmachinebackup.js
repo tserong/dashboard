@@ -132,6 +132,14 @@ export default class HciVmBackup extends HarvesterResource {
     return this?.status?.virtualMachineBackupContentName || '';
   }
 
+  get backupProgress() {
+    return {
+      type:       'backup',
+      percentage: this.status?.progress || 0,
+      details:    { volumes: this.status?.volumeBackups || [] }
+    };
+  }
+
   get backupTarget() {
     return this?.status?.backupTarget?.endpoint || '';
   }
