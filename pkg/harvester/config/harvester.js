@@ -435,6 +435,11 @@ export function init($plugin, store) {
       HCI.SSH,
       HCI.CLOUD_TEMPLATE,
       HCI.STORAGE,
+      HCI.SR_IOV,
+      HCI.PCI_DEVICE,
+      HCI.SR_IOVGPU_DEVICE,
+      HCI.VGPU_DEVICE,
+      HCI.ADD_ONS,
       HCI.SECRET,
       HCI.SETTING
     ],
@@ -668,11 +673,10 @@ export function init($plugin, store) {
     exact: false,
   });
 
-  basicType([HCI.PCI_DEVICE], 'advanced');
-
   virtualType({
     label:      'PCI Devices',
     group:      'advanced',
+    weight:     14,
     name:       HCI.PCI_DEVICE,
     namespaced: false,
     route:      {
@@ -703,12 +707,11 @@ export function init($plugin, store) {
     ]
   });
 
-  basicType([HCI.SR_IOV], 'advanced');
-
   virtualType({
     ifHaveType: HCI.SR_IOV,
     labelKey:   'harvester.sriov.label',
     group:      'advanced',
+    weight:     15,
     name:       HCI.SR_IOV,
     namespaced: false,
     route:      {
@@ -723,13 +726,57 @@ export function init($plugin, store) {
     hiddenNamespaceGroupButton: true,
   });
 
+  virtualType({
+    ifHaveType: HCI.SR_IOVGPU_DEVICE,
+    labelKey:   'harvester.sriovgpu.label',
+    group:      'advanced',
+    weight:     13,
+    name:       HCI.SR_IOVGPU_DEVICE,
+    namespaced: false,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.SR_IOVGPU_DEVICE }
+    },
+    exact: false,
+  });
+
+  configureType(HCI.SR_IOVGPU_DEVICE, {
+    isCreatable:                false,
+    hiddenNamespaceGroupButton: true,
+  });
+
+  virtualType({
+    labelKey:   'harvester.vgpu.label',
+    group:      'advanced',
+    weight:     12,
+    name:       HCI.VGPU_DEVICE,
+    namespaced: false,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: HCI.VGPU_DEVICE }
+    },
+    exact: false,
+  });
+
+  configureType(HCI.VGPU_DEVICE, {
+    isCreatable:                false,
+    hiddenNamespaceGroupButton: true,
+    listGroups:                 [
+      {
+        icon:       'icon-cluster',
+        value:      'node',
+        field:      'groupByNode',
+        hideColumn: 'node',
+        tooltipKey: 'resourceTable.groupBy.node'
+      }
+    ]
+  });
+
   configureType(HCI.ADD_ONS, {
     isCreatable: false,
     isRemovable: false,
     showState:   false,
   });
-
-  basicType([HCI.ADD_ONS], 'advanced');
 
   virtualType({
     label:      'Addons',

@@ -3,12 +3,13 @@ import { escapeHtml } from '@shell/utils/string';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
 import { NODE } from '@shell/config/types';
 import { HCI } from '../types';
+import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 
 /**
  * Class representing SR-IOV Device resource.
  * @extends SteveModal
  */
-export default class SRIOVGpuDevice extends SteveModel {
+export default class SRIOVDevice extends SteveModel {
   get _availableActions() {
     const out = super._availableActions;
 
@@ -61,24 +62,48 @@ export default class SRIOVGpuDevice extends SteveModel {
   }
 
   get isEnabled() {
-    return this.status?.status === 'sriovNetworkDeviceEnabled' && this.spec?.numVFs > 0;
+    return this.spec.enabled && this.status?.vfAddresses?.length > 0 && this.status?.vGPUDevices?.length > 0;
   }
 
-  enableDevice(resources = this) {
-    this.$dispatch('promptModal', {
-      resources,
-      component: 'EnableSriovDevice'
-    });
+  async enableDevice() {
+    try {
+      this.spec.enabled = true;
+      await this.save();
+    } catch (err) {
+      this.$dispatch('growl/fromError', {
+        title: this.t('generic.notification.title.error', { name: escapeHtml(this.metadata.name) }),
+        err,
+      }, { root: true });
+    }
   }
 
   async disableDevice() {
-    const numVFsHistory = this.spec.numVFs;
+    const inStore = this.$rootGetters['currentProduct'].inStore;
+    const schema = this.$rootGetters[`${ inStore }/schemaFor`](HCI.VGPU_DEVICE);
+
+    if (!!schema) {
+      const vGpuDevices = this.$rootGetters[`${ inStore }/all`](HCI.VGPU_DEVICE) || [];
+      const vGpuDevicesEnabled = vGpuDevices
+        .filter(f => f.labels[HCI_ANNOTATIONS.PARENT_SRIOV_GPU] === this.id && f.spec?.enabled)
+        .map(m => m.id);
+
+      if (vGpuDevicesEnabled.length > 0) {
+        this.$dispatch('growl/error', {
+          title:   this.t('generic.notification.title.error', { name: escapeHtml(this.metadata.name) }),
+          message: `
+            Cannot disable ${ this.metadata.name }, following vGPU devices are enabled:
+            [${ vGpuDevicesEnabled.join(', ') }]
+          `,
+        }, { root: true });
+
+        return;
+      }
+    }
 
     try {
-      this.spec.numVFs = 0;
+      this.spec.enabled = false;
       await this.save();
     } catch (err) {
-      this.spec.numVFs = numVFsHistory;
       this.$dispatch('growl/fromError', {
         title: this.t('generic.notification.title.error', { name: escapeHtml(this.metadata.name) }),
         err,
@@ -96,10 +121,10 @@ export default class SRIOVGpuDevice extends SteveModel {
   }
 
   get numVFs() {
-    return this.spec?.numVFs;
+    return this.status?.vfAddresses?.length || 0;
   }
 
   get childDevice() {
-    return HCI.PCI_DEVICE;
+    return HCI.VGPU_DEVICE;
   }
 }

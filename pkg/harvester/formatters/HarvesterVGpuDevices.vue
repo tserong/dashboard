@@ -2,7 +2,7 @@
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
 
 export default {
-  name: 'HarvesterVFAddress',
+  name: 'HarvesterVGpuDevices',
 
   props: {
     row: {
@@ -12,27 +12,25 @@ export default {
   },
 
   data() {
-    return { showAll: false, limitedNumbers: 3 };
+    return { showAll: false, limitedNumbers: 2 };
   },
 
   computed: {
-    allVFs() {
-      return this.row.status?.vfAddresses || [];
+    allVGpuDevices() {
+      return this.row.status?.vGPUDevices || [];
     },
 
     rows() {
-      const out = this.allVFs.map((O) => {
-        const [prefix, middle, suffix] = O.split(':');
-        const q = `${ this.row.spec?.nodeName }-${ prefix }${ middle }${ suffix.replace('.', '') }`;
+      const out = this.allVGpuDevices.map((device) => {
         const to = {
           name:   `${ HARVESTER_PRODUCT }-c-cluster-resource`,
           params: { cluster: this.$store.getters['clusterId'], resource: this.row.childDevice },
-          query:  { q }
+          query:  { q: device }
         };
 
         return {
           to,
-          name: O
+          name: device
         };
       });
 
@@ -46,12 +44,12 @@ export default {
 </script>
 
 <template>
-  <div class="vfs">
-    <span v-for="(vf, index) in rows.visible" :key="vf.name">
+  <div class="vgpudevices">
+    <span v-for="(vgpu, index) in rows.visible" :key="vgpu.name">
       <n-link
-        :to="vf.to"
+        :to="vgpu.to"
       >
-        {{ vf.name }}
+        {{ vgpu.name }}
       </n-link>
 
       <span v-if="index < rows.visible.length - 1">, </span>
@@ -61,24 +59,24 @@ export default {
       trigger="click"
       placement="top"
     >
-      <span v-if="allVFs.length > limitedNumbers">
+      <span v-if="allVGpuDevices.length > limitedNumbers">
         , <a
           href="javascript:void(0)"
           class="show-more"
           @click.prevent="showAll = !showAll"
         >
-          {{ t('harvester.sriov.showMore') }}
+          {{ t('harvester.sriovgpu.showMore') }}
         </a>
       </span>
 
       <template v-slot:popover>
-        <div class="vfs-popup">
+        <div class="vgpu-popup">
           <div>
-            <span v-for="(vf, index) in rows.invisible" :key="vf.name">
+            <span v-for="(vgpu, index) in rows.invisible" :key="vgpu.name">
               <n-link
-                :to="vf.to"
+                :to="vgpu.to"
               >
-                {{ vf.name }}
+                {{ vgpu.name }}
               </n-link>
 
               <span v-if="index < rows.invisible.length - 1">, </span>
@@ -91,15 +89,14 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-
-  .vfs {
+  .vgpudevices {
     min-width: 380px;
 
     .show-more {
       font-size: 12px;
     }
   }
-  .popover .popover-inner .vfs-popup a {
+  .popover .popover-inner .vgpu-popup a {
     color: var(--link);
 
     &:hover {

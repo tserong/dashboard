@@ -1,6 +1,5 @@
 <script>
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
-import { HCI } from '../types';
 
 export default {
   name: 'HarvesterVFsNum',
@@ -16,7 +15,7 @@ export default {
     to() {
       return {
         name:   `${ HARVESTER_PRODUCT }-c-cluster-resource`,
-        params: { cluster: this.$store.getters['clusterId'], resource: HCI.PCI_DEVICE },
+        params: { cluster: this.$store.getters['clusterId'], resource: this.row.childDevice },
         query:  { parentSriov: this.row.id }
       };
     }
@@ -29,7 +28,7 @@ export default {
     <n-link
       :to="to"
     >
-      {{ row.spec.numVFs }}
+      {{ row.numVFs }}
     </n-link>
   </div>
 </template>

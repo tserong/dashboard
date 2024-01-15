@@ -187,6 +187,7 @@ harvester:
     advanced: Advanced Options
     accessCredentials: Access Credentials
     pciDevices: PCI Devices
+    vGpuDevices: VGPU Devices
     vmScheduling: VM Scheduling
     instanceLabel: Instance Labels
   fields:
@@ -1108,6 +1109,7 @@ harvester:
       'cattle-monitoring-system/rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
       'vm-import-controller': vm-import-controller is an addon to help migrate VM workloads from other source clusters to an existing Harvester cluster.
       'pcidevices-controller': pcidevices-controller is an addon to help discover PCI devices for nodes in your cluster and allow users to prepare devices for PCI Passthrough, for use with Harvester VM and guest Clusters.
+      'nvidia-driver-toolkit': 'nvidia-driver-toolkit is an addon to enable vGPU devices and assign them to Harvester VMs.'
       'rancher-logging': rancher-logging is an addon to collect versatile logs, events and audits from the Harvester cluster and route them to many kinds of servers based on flows.
       'rancher-monitoring': rancher-monitoring is an addon to collect Harvester cluster and VM metrics, view them on the embedded dashboard, and send alert(s) to remote servers.
       'rancher-vcluster': rancher-vcluster deploys a vcluster with rancher installed.
@@ -1123,8 +1125,9 @@ harvester:
       rancherVersion: Rancher Version
       password: Bootstrap Password
     switchFailed: "{action} {name} failed!"
-      
-
+    nvidiaDriverToolkit:
+      titles:
+        basic: Controller
 
   loadBalancer:
     label: Load Balancers
@@ -1228,6 +1231,38 @@ harvester:
     vfAddresses: Virtual Functions Addresses
     showMore: Show More
     parentSriov: Filter By Parent SR-IOV
+
+  sriovgpu:
+    label: SR-IOV GPU Devices
+    nodeName: Node
+    numVFs: Number Of Virtual Functions
+    vfAddresses: Virtual Functions Addresses
+    vGpuDevices: vGPU Devices
+    showMore: Show More
+    parentSriov: Filter By Parent SR-IOV GPU
+    noPermission: Please contact system admin to add Harvester addons first
+    goSetting:
+      prefix: The nvidia-driver-toolkit addon is not enabled, click
+      middle: here
+      suffix: to enable it to manage your SR-IOV GPU devices.
+
+  vgpu:
+    label: vGPU Devices
+    noPermission: Please contact system admin to add Harvester addons first
+    goSetting:
+      prefix: The nvidia-driver-toolkit addon is not enabled, click
+      middle: here
+      suffix: to enable it to manage your vGPU devices.
+    enableGroup: Enable Group
+    disableGroup: Disable Group
+    enable:
+      title: Select vGPU
+      type: Type
+    available: Available Devices
+    compatibleNodes: Compatible Nodes
+    impossibleSelection: 'There are no hosts with all of the selected devices.'
+    howToUseDevice: 'Use the table below to enable vGPU devices you want to use in this VM.'
+    deviceInTheSameHost: 'You can only select devices on the same host.'
 
   harvesterVlanConfigMigrateDialog:
     targetClusterNetwork: 
@@ -1423,6 +1458,19 @@ typeLabel:
       one { SR-IOV Network Device }
       other { SR-IOV Network Devices }
     }
+
+  devices.harvesterhci.io.sriovgpudevice: |-
+    {count, plural,
+      one { SR-IOV GPU Device }
+      other { SR-IOV GPU Devices }
+    }
+
+  devices.harvesterhci.io.vgpudevice: |-
+    {count, plural,
+      one { vGPU Device }
+      other { vGPU Devices }
+    }
+
   harvesterhci.io.secret: |-
     {count, plural,
       one { Secret }
