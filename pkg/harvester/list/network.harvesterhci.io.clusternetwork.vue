@@ -42,7 +42,10 @@ export default {
     headers() {
       return [
         STATE,
-        NAME,
+        {
+          ...NAME,
+          width: 300,
+        },
         {
           name:     'type',
           labelKey: 'tableHeaders.type',
@@ -267,4 +270,11 @@ export default {
     }
   }
 }
+</style>
+
+<style lang="scss">
+  .col-link-detail {
+    // Avoid 'Create Network Config' button to overlap the namespace tab when resize table to min length
+    min-width: 200px;
+  }
 </style>
