@@ -278,3 +278,12 @@ export default {
     min-width: 200px;
   }
 </style>
+
+<style lang="scss">
+  .group-bar .right {
+    display: flex;
+    margin-left: 50px;
+    a {
+      height: 30px;
+    }
+  }
