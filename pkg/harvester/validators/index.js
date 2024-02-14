@@ -5,6 +5,7 @@ import { backupTarget, ntpServers } from './setting';
 import { volumeSize } from './volume';
 import { rancherMonitoring, rancherLogging } from './monitoringAndLogging';
 import { ranges } from './network';
+import { hashSHA512 } from './hash';
 
 export default {
   imageUrl,
@@ -18,4 +19,5 @@ export default {
   rancherMonitoring,
   rancherLogging,
   ranges,
+  hashSHA512,
 };

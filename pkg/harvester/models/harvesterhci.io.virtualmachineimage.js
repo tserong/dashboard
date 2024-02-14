@@ -264,6 +264,15 @@ export default class HciVmImage extends HarvesterResource {
       out.push(fileRequired);
     }
 
+    if (this.spec?.checksum?.length) {
+      const checksumFormat = {
+        path:       'spec.checksum',
+        validators: ['hashSHA512'],
+      };
+
+      out.push(checksumFormat);
+    }
+
     return [
       {
         nullable:       false,
