@@ -2,6 +2,7 @@
 import Footer from '@shell/components/form/Footer';
 import { RadioGroup } from '@components/Form/Radio';
 import { LabeledInput } from '@components/Form/LabeledInput';
+import Checkbox from '@components/Form/Checkbox/Checkbox';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { allHash } from '@shell/utils/promise';
@@ -31,6 +32,7 @@ const createObject = {
 export default {
   name:       'CreateRestore',
   components: {
+    Checkbox,
     Footer,
     RadioGroup,
     LabeledInput,
@@ -191,6 +193,7 @@ export default {
       } else {
         this.restoreResource.spec.deletionPolicy = this.deletionPolicy;
         delete this.restoreResource.spec.newVM;
+        delete this.restoreResource.spec.keepMacAddress;
       }
     }
   },
@@ -236,9 +239,26 @@ export default {
         </div>
       </div>
 
-      <LabeledSelect v-model="backupName" class="mb-20" :label="t('harvester.backup.restore.backup')" :options="backupOption" />
+      <LabeledSelect
+        v-model="backupName"
+        class="mb-20"
+        :label="t('harvester.backup.restore.backup')"
+        :options="backupOption"
+      />
 
-      <LabeledSelect v-if="!restoreNewVm" v-model="deletionPolicy" :label="t('harvester.backup.restore.deletePreviousVolumes')" :options="deletionPolicyOption" />
+      <Checkbox
+        v-if="restoreNewVm"
+        v-model="restoreResource.spec.keepMacAddress"
+        type="checkbox"
+        :label="t('harvester.backup.restore.keepMacAddress')"
+      />
+
+      <LabeledSelect
+        v-if="!restoreNewVm"
+        v-model="deletionPolicy"
+        :label="t('harvester.backup.restore.deletePreviousVolumes')"
+        :options="deletionPolicyOption"
+      />
     </div>
 
     <Footer mode="create" class="footer" :errors="errors" @save="saveRestore" @done="done" />
