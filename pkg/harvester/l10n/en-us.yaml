@@ -285,6 +285,8 @@ harvester:
     image:
       ruleTip: 'The URL you have entered ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'
       ruleFileTip: 'The file you have chosen ends in an extension that we do not support. We only accept image files that end in .img, .iso, .qcow, .qcow2, .raw.'
+    hash:
+      sha512: 'Invalid SHA512 checksum.'
 
   dashboard:
     label: Dashboard
@@ -702,6 +704,8 @@ harvester:
         =1 {1 image is uploading, please do not refresh or close the page.}
         other {{count} images are uploading, please do not refresh or close the page.}
         }
+    checksum: Checksum
+    checksumTip: Validate the image using the SHA512 checksum, if specified.
 
   vmTemplate:
     label: Templates

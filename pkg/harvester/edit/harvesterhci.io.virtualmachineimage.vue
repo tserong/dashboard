@@ -323,7 +323,7 @@ export default {
               v-model="value.spec.url"
               :mode="mode"
               :disabled="isEdit"
-              class="labeled-input--tooltip"
+              class="mb-20 labeled-input--tooltip"
               required
               label-key="harvester.image.url"
               :tooltip="t('harvester.image.urlTip', {}, true)"
@@ -365,6 +365,15 @@ export default {
                 {{ uploadFileName }}
               </div>
             </div>
+
+            <LabeledInput
+              v-if="value.spec.sourceType === 'download'"
+              v-model="value.spec.checksum"
+              :mode="mode"
+              :disabled="isEdit"
+              label-key="harvester.image.checksum"
+              :tooltip="t('harvester.image.checksumTip')"
+            />
           </div>
         </div>
       </Tab>
