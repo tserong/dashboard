@@ -786,6 +786,7 @@ harvester:
       createNew: Create new
       replaceExisting: Replace existing
       virtualMachineName: Virtual Machine Name
+      keepMacAddress: Keep MAC Address
     matchTarget: The current backup target does not match the existing one.
     progress: 
       details: Volume details
