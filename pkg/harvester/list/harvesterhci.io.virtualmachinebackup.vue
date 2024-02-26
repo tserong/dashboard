@@ -90,7 +90,7 @@ export default {
 
   computed: {
     headers() {
-      return [
+      const cols = [
         STATE,
         NAME,
         NAMESPACE,
@@ -115,16 +115,26 @@ export default {
           align:     'left',
           formatter: 'Checked',
         },
-        {
+      ];
+
+      if (this.hasBackupProgresses) {
+        cols.push({
           name:      'backupProgress',
           labelKey:  'tableHeaders.progress',
           value:     'backupProgress',
           align:     'left',
           formatter: 'HarvesterBackupProgressBar',
           width:     200,
-        },
-        AGE
-      ];
+        });
+      }
+
+      cols.push(AGE);
+
+      return cols;
+    },
+
+    hasBackupProgresses() {
+      return !!this.rows.find(R => R.status?.progress !== undefined);
     },
 
     filteredRows() {
