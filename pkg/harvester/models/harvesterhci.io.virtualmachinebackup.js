@@ -136,8 +136,8 @@ export default class HciVmBackup extends HarvesterResource {
   get backupProgress() {
     return {
       type:       BACKUP_TYPE.BACKUP,
-      percentage: this.status?.progress || 0,
-      details:    { volumes: this.status?.volumeBackups || [] }
+      percentage: this.status?.progress === undefined && !this.status?.readyToUse ? 0 : this.status?.progress,
+      details:    { volumes: this.status?.volumeBackups }
     };
   }
 
