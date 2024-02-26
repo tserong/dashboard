@@ -14,10 +14,10 @@ export default {
 
   computed: {
     isEmpty() {
-      return this.value !== undefined && Object.keys(this.value).length === 0;
+      return this.value?.percentage === undefined;
     },
     status() {
-      switch (this.value.percentage) {
+      switch (this.value?.percentage) {
       case 0:
         return 'starting';
       case 100:
@@ -47,7 +47,7 @@ export default {
     },
 
     tooltip() {
-      if (!this.value.details.volumes?.length) {
+      if (!this.value?.details?.volumes?.length) {
         return null;
       }
       const title = this.t(`harvester.${ this.value.type }.progress.details`);
