@@ -1,6 +1,7 @@
 import pickBy from 'lodash/pickBy';
-import { LONGHORN, POD, NODE } from '@shell/config/types';
+import { CAPI, LONGHORN, POD, NODE } from '@shell/config/types';
 import { HCI } from '../../types';
+import { CAPI as CAPI_ANNOTATIONS } from '@shell/config/labels-annotations.js';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { clone } from '@shell/utils/object';
 import findLast from 'lodash/findLast';
@@ -82,6 +83,24 @@ export default class HciNode extends HarvesterResource {
       total:   1
     };
 
+    const promptRemove = {
+      action:     'promptRemove',
+      altAction:  'remove',
+      label:      this.t('action.remove'),
+      icon:       'icon icon-trash',
+      bulkable:   true,
+      enabled:    this.canDelete,
+      bulkAction: 'promptRemove',
+      weight:     -10,
+    };
+
+    const out = super._availableActions;
+    const remove = out.findIndex(a => a.action === 'promptRemove');
+
+    if (remove > -1) {
+      out.splice(remove, 1);
+    }
+
     return [
       cordon,
       uncordon,
@@ -90,8 +109,42 @@ export default class HciNode extends HarvesterResource {
       shutDown,
       powerOn,
       reboot,
-      ...super._availableActions
+      ...out,
+      promptRemove,
     ];
+  }
+
+  promptRemove(resources = this) {
+    this.$dispatch('promptModal', {
+      resources,
+      warningMessageKey: 'promptRemove.confirmRelatedResource',
+      component:         'ConfirmRelatedToRemoveDialog'
+    });
+  }
+
+  remove(resources = this) {
+    const nodes = Array.isArray(resources) ? resources : [resources];
+
+    nodes.forEach((node) => {
+      if (node.capiMachine) {
+        node.capiMachine.remove();
+      } else {
+        node.remove();
+      }
+    });
+  }
+
+  get capiMachine() {
+    const namespace = this.annotations?.[CAPI_ANNOTATIONS.CLUSTER_NAMESPACE];
+    const name = this.annotations?.[CAPI_ANNOTATIONS.MACHINE_NAME];
+
+    if (namespace && name) {
+      const inStore = this.$rootGetters['currentProduct'].inStore;
+
+      return this.$rootGetters[`${ inStore }/byId`](CAPI.MACHINE, `${ namespace }/${ name }`);
+    }
+
+    return null;
   }
 
   get confirmRemove() {

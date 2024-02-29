@@ -3,7 +3,7 @@ import ResourceTable from '@shell/components/ResourceTable';
 import Loading from '@shell/components/Loading';
 import { STATE, NAME, AGE } from '@shell/config/table-headers';
 import {
-  METRIC, NODE, SCHEMA, LONGHORN, POD
+  CAPI, METRIC, NODE, SCHEMA, LONGHORN, POD
 } from '@shell/config/types';
 import { HCI } from '../types';
 import { allHash } from '@shell/utils/promise';
@@ -54,6 +54,10 @@ export default {
 
     if (this.$store.getters[`${ inStore }/schemaFor`](HCI.INVENTORY)) {
       _hash.inventories = this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.INVENTORY });
+    }
+
+    if (this.$store.getters[`${ inStore }/schemaFor`](CAPI.MACHINE)) {
+      _hash.machines = this.$store.dispatch(`${ inStore }/findAll`, { type: CAPI.MACHINE });
     }
 
     const hash = await allHash(_hash);
