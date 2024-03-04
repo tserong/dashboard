@@ -1,6 +1,7 @@
 import pickBy from 'lodash/pickBy';
-import { LONGHORN, POD, NODE } from '@shell/config/types';
+import { CAPI, LONGHORN, POD, NODE } from '@shell/config/types';
 import { HCI } from '../../types';
+import { CAPI as CAPI_ANNOTATIONS } from '@shell/config/labels-annotations.js';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { clone } from '@shell/utils/object';
 import findLast from 'lodash/findLast';
@@ -92,6 +93,39 @@ export default class HciNode extends HarvesterResource {
       reboot,
       ...super._availableActions
     ];
+  }
+
+  promptRemove(resources = this) {
+    this.$dispatch('promptModal', {
+      resources,
+      warningMessageKey: 'promptRemove.confirmRelatedResource',
+      component:         'ConfirmRelatedToRemoveDialog'
+    });
+  }
+
+  remove(resources = this) {
+    const nodes = Array.isArray(resources) ? resources : [resources];
+
+    nodes.forEach((node) => {
+      if (node.capiMachine) {
+        node.capiMachine.remove();
+      } else {
+        node.remove();
+      }
+    });
+  }
+
+  get capiMachine() {
+    const namespace = this.annotations?.[CAPI_ANNOTATIONS.CLUSTER_NAMESPACE];
+    const name = this.annotations?.[CAPI_ANNOTATIONS.MACHINE_NAME];
+
+    if (namespace && name) {
+      const inStore = this.$rootGetters['currentProduct'].inStore;
+
+      return this.$rootGetters[`${ inStore }/byId`](CAPI.MACHINE, `${ namespace }/${ name }`);
+    }
+
+    return null;
   }
 
   get confirmRemove() {
