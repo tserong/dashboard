@@ -1,11 +1,11 @@
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 
 export function parseVolumeClaimTemplates(data) {
-  const volumeClaimTemplateString = data?.metadata?.annotations[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE];
+  let out = [];
 
   try {
-    return JSON.parse(volumeClaimTemplateString);
-  } catch (e) {
-    return [];
-  }
+    out = JSON.parse(data?.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE]) || [];
+  } catch (e) {}
+
+  return out;
 }
