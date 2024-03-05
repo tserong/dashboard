@@ -1,12 +1,12 @@
 import YAML from 'yaml';
 import jsyaml from 'js-yaml';
 import isEqual from 'lodash/isEqual';
-import { parseVolumeClaimTemplates } from '@pkg/utils/vm';
 import { clone } from '@shell/utils/object';
 import { SECRET } from '@shell/config/types';
 import { HCI } from '../../types';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { OS } from './index';
+import { parseVolumeClaimTemplates } from '../../utils/vm';
 
 export const QGA_JSON = {
   package_update: true,
