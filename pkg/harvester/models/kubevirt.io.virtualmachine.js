@@ -14,6 +14,7 @@ import HarvesterResource from './harvester';
 import { matchesSomeRegex } from '@shell/utils/string';
 import { LABELS_TO_IGNORE_REGEX } from '@shell/config/labels-annotations';
 import { BACKUP_TYPE } from '../config/types';
+import { parseVolumeClaimTemplates } from '@pkg/utils/vm';
 
 export const OFF = 'Off';
 
@@ -281,13 +282,7 @@ export default class VirtVm extends HarvesterResource {
     }
 
     // delete, spec?.dataSource:  The original data should not be saved when clone template
-    let volumeClaimTemplate = [];
-
-    try {
-      volumeClaimTemplate = JSON.parse(this.metadata.annotations[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE]);
-    } catch (e) {}
-
-    const deleteDataSource = volumeClaimTemplate.map((volume) => {
+    const deleteDataSource = this.volumeClaimTemplates.map((volume) => {
       if (volume?.spec?.dataSource) {
         delete volume.spec.dataSource;
       }
@@ -894,15 +889,7 @@ export default class VirtVm extends HarvesterResource {
   }
 
   get volumeClaimTemplates() {
-    let out = [];
-
-    try {
-      out = JSON.parse(
-        this.metadata?.annotations?.[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE]
-      );
-    } catch (e) {}
-
-    return out;
+    return parseVolumeClaimTemplates(this);
   }
 
   get persistentVolumeClaimName() {
