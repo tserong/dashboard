@@ -1,7 +1,7 @@
 import { PVC } from '@shell/config/types';
 import { isValidMac, isValidDNSLabelName } from '@pkg/utils/regular';
 import { SOURCE_TYPE } from '@pkg/config/harvester-map';
-import { parseVolumeClaimTemplates } from '@pkg/utils/vm.js';
+import { parseVolumeClaimTemplates } from '@pkg/utils/vm';
 
 const maxNameLength = 63;
 

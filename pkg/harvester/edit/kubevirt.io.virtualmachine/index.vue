@@ -39,6 +39,8 @@ import { BEFORE_SAVE_HOOKS, AFTER_SAVE_HOOKS } from '@shell/mixins/child-hook';
 import VM_MIXIN from '../../mixins/harvester-vm';
 import CreateEditView from '@shell/mixins/create-edit-view';
 
+import { parseVolumeClaimTemplates } from '@pkg/utils/vm';
+
 export default {
   name: 'HarvesterEditVM',
 
@@ -203,7 +205,7 @@ export default {
         delete cloneVersionVM.spec?.template?.metadata?.annotations?.[HCI_ANNOTATIONS.DYNAMIC_SSHKEYS_NAMES];
         delete cloneVersionVM.spec?.template?.metadata?.annotations?.[HCI_ANNOTATIONS.DYNAMIC_SSHKEYS_USERS];
 
-        const claimTemplate = this.getVolumeClaimTemplates(cloneVersionVM);
+        const claimTemplate = parseVolumeClaimTemplates(cloneVersionVM);
 
         const deleteDataSource = claimTemplate.map((volume) => {
           if (volume?.spec?.dataSource) {
@@ -219,7 +221,7 @@ export default {
           value: cloneVersionVM, existUserData: true, fromTemplate: true
         });
         this.$set(this, 'hasCreateVolumes', []); // When using the template, all volume names need to be newly created
-        // const claimTemplate = this.getVolumeClaimTemplates(cloneVersionVM);
+        // const claimTemplate = parseVolumeClaimTemplates(cloneVersionVM);
         // this.value.metadata.annotations[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE] = JSON.stringify(claimTemplate);
       }
     },

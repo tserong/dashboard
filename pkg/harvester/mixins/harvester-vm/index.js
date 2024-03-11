@@ -22,6 +22,7 @@ import { HOSTNAME } from '@shell/config/labels-annotations';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import impl, { QGA_JSON, USB_TABLET } from './impl';
 import { uniq } from '@shell/utils/array';
+import { parseVolumeClaimTemplates } from '../../utils/vm';
 
 export const MANAGEMENT_NETWORK = 'management Network';
 
@@ -395,7 +396,7 @@ export default {
       const namespace = vm.metadata.namespace;
       const _volumes = vm.spec.template.spec.volumes || [];
       const _disks = vm.spec.template.spec.domain.devices.disks || [];
-      const _volumeClaimTemplates = this.getVolumeClaimTemplates(vm);
+      const _volumeClaimTemplates = parseVolumeClaimTemplates(vm);
 
       let out = [];
 

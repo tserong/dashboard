@@ -6,6 +6,7 @@ import { SECRET } from '@shell/config/types';
 import { HCI } from '../../types';
 import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 import { OS } from './index';
+import { parseVolumeClaimTemplates } from '../../utils/vm';
 
 export const QGA_JSON = {
   package_update: true,
@@ -214,22 +215,10 @@ export default {
       });
     },
 
-    getVolumeClaimTemplates(vm) {
-      let out = [];
-
-      try {
-        out = JSON.parse(vm.metadata.annotations[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE]);
-      } catch (e) {
-        new Error(`Function: getVolumeClaimTemplates, ${ e }`);
-      }
-
-      return out;
-    },
-
     getRootImageId(vm) {
-      const volume = this.getVolumeClaimTemplates(vm);
+      const volumes = parseVolumeClaimTemplates(vm);
 
-      return volume?.[0]?.metadata?.annotations?.[HCI_ANNOTATIONS.IMAGE_ID] || '';
+      return volumes?.[0]?.metadata?.annotations?.[HCI_ANNOTATIONS.IMAGE_ID] || '';
     },
 
     getSSHFromAnnotation(spec) {
