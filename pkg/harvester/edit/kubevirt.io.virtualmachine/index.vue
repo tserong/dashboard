@@ -221,8 +221,6 @@ export default {
           value: cloneVersionVM, existUserData: true, fromTemplate: true
         });
         this.$set(this, 'hasCreateVolumes', []); // When using the template, all volume names need to be newly created
-        // const claimTemplate = parseVolumeClaimTemplates(cloneVersionVM);
-        // this.value.metadata.annotations[HCI_ANNOTATIONS.VOLUME_CLAIM_TEMPLATE] = JSON.stringify(claimTemplate);
       }
     },
 
