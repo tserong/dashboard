@@ -101,6 +101,7 @@ export default {
     commit('updateNamespaces', {
       filters: [],
       all:     getters.filterNamespace(),
+      getters
     }, { root: true });
 
     // Solve compatibility with Rancher v2.6.x, fell remove these codes after not support v2.6.x
