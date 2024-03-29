@@ -249,7 +249,7 @@ export default class VirtVm extends HarvesterResource {
             },
             features: { acpi: { enabled: true } }
           },
-          evictionStrategy: 'LiveMigrate',
+          evictionStrategy: 'LiveMigrateIfPossible',
           hostname:         '',
           networks:         [
             {
