@@ -101,13 +101,16 @@ export default {
 
   watch: {
     publicKey(neu) {
-      const splitSSH = neu.split(/\s+/);
+      const trimNeu = neu.trim();
+      const splitSSH = trimNeu.split(/\s+/);
 
       if (splitSSH.length === 3) {
-        if (splitSSH[2].includes('@')) {
-          if (splitSSH[2].split('@')) {
+        const keyComment = splitSSH[2];
+
+        if (keyComment.includes('@')) {
+          if (keyComment.split('@')) {
             if (!this.sshName) {
-              this.sshName = splitSSH[2].split('@')[0];
+              this.sshName = keyComment.split('@')[0];
             }
           }
         }
