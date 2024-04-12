@@ -46,7 +46,8 @@ export const VM_HEADERS = [
     label:     'IP Address',
     value:     'id',
     formatter: 'HarvesterIpAddress',
-    labelKey:  'tableHeaders.ipAddress'
+    labelKey:  'tableHeaders.ipAddress',
+    sort:      ['id'],
   },
   {
     ...AGE,
