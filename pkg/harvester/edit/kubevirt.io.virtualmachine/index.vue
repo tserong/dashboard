@@ -517,6 +517,7 @@ export default {
         <SSHKey
           v-model="sshKey"
           class="mb-20"
+          :create-namespace="true"
           :namespace="value.metadata.namespace"
           :mode="mode"
           :disabled="isWindows"
