@@ -240,6 +240,6 @@ export default {
   .actions {
     width: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
   }
 </style>
