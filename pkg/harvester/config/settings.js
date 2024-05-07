@@ -29,6 +29,7 @@ export const HCI_SETTING = {
   CSI_DRIVER_CONFIG:         'csi-driver-config',
   VM_TERMINATION_PERIOD:     'default-vm-termination-grace-period-seconds',
   NTP_SERVERS:               'ntp-servers',
+  AUTO_ROTATE_RKE2_CERTS:    'auto-rotate-rke2-certs'
 };
 
 export const HCI_ALLOWED_SETTINGS = {
@@ -42,6 +43,7 @@ export const HCI_ALLOWED_SETTINGS = {
   [HCI_SETTING.VLAN]: {
     kind: 'custom', from: 'import', alias: 'vlan'
   },
+  [HCI_SETTING.AUTO_ROTATE_RKE2_CERTS]:  { kind: 'json', from: 'import' },
   [HCI_SETTING.CSI_DRIVER_CONFIG]:       { kind: 'json', from: 'import' },
   [HCI_SETTING.SERVER_VERSION]:          { readOnly: true },
   [HCI_SETTING.UPGRADE_CHECKER_ENABLED]: { kind: 'boolean' },
