@@ -414,6 +414,7 @@ export default {
             <Select
               v-if="internalAnnotations(row)"
               v-model="row[valueName]"
+              :mode="mode"
               :searchable="true"
               :clearable="false"
               :options="calculateOptions(row[keyName])"
