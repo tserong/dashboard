@@ -45,6 +45,7 @@ export default {
           labelKey: 'tableHeaders.hostIp',
           search:   ['internalIp'],
           value:    'internalIp',
+          sort:     ['internalIp'],
         },
         AGE,
       ];
