@@ -64,7 +64,7 @@ export default {
         v-int-number
         class="mb-20"
         :min="1"
-        :max="8758"
+        :max="8759"
         :required="true"
         :suffix="parseDefaultValue.expiringInHours === 1 ? 'Hour' : 'Hours'"
         :label="t('harvester.setting.autoRotateRKE2Certs.expiringInHours')"
