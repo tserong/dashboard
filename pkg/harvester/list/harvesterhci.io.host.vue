@@ -90,6 +90,7 @@ export default {
           search:    ['internalIp'],
           value:     'internalIp',
           formatter: 'CopyToClipboard',
+          sort:      ['internalIp'],
         },
       ];
 
