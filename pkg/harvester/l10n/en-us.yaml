@@ -55,7 +55,7 @@ harvester:
     cloneVM:
       title: Clone VM
       name: New VM Name
-      type: clone volume data
+      type: Clone volume data
       action:
         create: Create
         clone: Clone
