@@ -873,6 +873,8 @@ harvester:
       tip: 'IP Range should be in IPV4 format. <code>Number of IPs Required = Number of Nodes * 4 + Number of Disks * 2 + Number of Images to Download/Upload </code>. See <a href="https://docs.harvesterhci.io/v1.2/advanced/storagenetwork#configuration-example" target="_blank">doc</a> for more details.'
     vmForceDeletionPolicy:
       period: Period
+    autoRotateRKE2Certs:
+      expiringInHours: Expiring in
     httpProxy:
       warning: 'WARNING: <br/> If you configure "http-proxy" and "https-proxy", you must also put Harvester node&apos;s CIDR into "no-proxy", otherwise the Harvester cluster will be broken.'
     supportBundleImage:
@@ -1356,6 +1358,7 @@ advancedSettings:
     'harv-release-download-url': This setting allows you to configure the <code>upgrade release download</code> URL address. Harvester will get the ISO URL and checksum value from the (<code>$URL</code>/<code>$VERSION</code>/version.yaml) file hosted by the configured URL.
     'harv-default-vm-termination-grace-period-seconds': Config the VM termination grace period for VM stop.
     'harv-ntp-servers': Configure NTP server. You can configure multiple IPv4 addresses or host addresses.
+    'harv-auto-rotate-rke2-certs': The certificate rotation mechanism relies on Rancher. Harvester will automatically update certificates generation to trigger rotation.
 
 typeLabel:
   kubevirt.io.virtualmachine: |-
