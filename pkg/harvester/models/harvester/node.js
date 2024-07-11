@@ -134,13 +134,10 @@ export default class HciNode extends HarvesterResource {
 
   get consoleUrl() {
     const url = this.metadata?.annotations?.[HCI_ANNOTATIONS.HOST_CONSOLE_URL];
+    const validator = /^[a-z]+:\/\//;
 
-    if (!url) {
+    if (!url?.match(validator)) {
       return false;
-    }
-
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      return `http://${ url }`;
     }
 
     return url;
