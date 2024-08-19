@@ -121,7 +121,7 @@ export default {
           labelKey:      'tableHeaders.storage',
           value:         'id',
           formatter:     'HarvesterStorageUsed',
-          formatterOpts: { showReserved: true },
+          formatterOpts: { showAllocated: true },
         };
 
         out.splice(-1, 0, storageHeader);
