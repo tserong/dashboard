@@ -68,13 +68,18 @@ export default {
       return resource;
     },
 
+    cpuPinningAlertMessage() {
+      return this.t('harvester.virtualMachine.cpuPinning.migrationMessage');
+    },
+
     nodeNameList() {
       const nodes = this.$store.getters['harvester/all'](NODE);
 
       return nodes.filter((n) => {
         const isNotSelfNode = !!this.availableNodes.includes(n.id);
         const isNotWitnessNode = n.isEtcd !== 'true'; // do not allow to migrate to self node and witness node
-        const matchingCpuManagerConfig = n.isCPUManagerEnabled; // If cpu-pinning is enabled, filter-out non-enabled CPU manager nodes.
+        const isCpuPinning = this.actionResource?.isCpuPinning;
+        const matchingCpuManagerConfig = !isCpuPinning || n.isCPUManagerEnabled; // If cpu-pinning is enabled, filter-out non-enabled CPU manager nodes.
 
         return isNotSelfNode && isNotWitnessNode && matchingCpuManagerConfig;
       }).map((n) => {
@@ -143,6 +148,7 @@ export default {
     </template>
 
     <template #body>
+      <Banner v-if="actionResource?.isCpuPinning" color="warning" :label="cpuPinningAlertMessage" />
       <LabeledSelect
         v-model="nodeName"
         :label="t('harvester.modal.migration.fields.nodeName.label')"
@@ -163,7 +169,6 @@ export default {
           @click="apply"
         />
       </div>
-
       <Banner v-for="(err, i) in errors" :key="i" color="error" :label="err" />
     </div>
   </Card>
