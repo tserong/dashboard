@@ -2,21 +2,22 @@
 import { findBy } from '@shell/utils/array';
 import UnitInput from '@shell/components/form/UnitInput';
 import { LabeledInput } from '@components/Form/LabeledInput';
+import LabelValue from '@shell/components/LabelValue';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import InputOrDisplay from '@shell/components/InputOrDisplay';
+import { Banner } from '@components/Banner';
 import { PVC } from '@shell/config/types';
 import { HCI } from '../../../../types';
 import { formatSi, parseSi } from '@shell/utils/units';
 import { VOLUME_TYPE, InterfaceOption } from '../../../../config/harvester-map';
 import { _VIEW } from '@shell/config/query-params';
-import LabelValue from '@shell/components/LabelValue';
 import { ucFirst } from '@shell/utils/string';
 
 export default {
   name: 'HarvesterEditVMImage',
 
   components: {
-    UnitInput, LabeledInput, LabeledSelect, InputOrDisplay, LabelValue
+    UnitInput, LabeledInput, LabeledSelect, InputOrDisplay, LabelValue, Banner
   },
 
   props: {
@@ -97,6 +98,12 @@ export default {
       const image = this.imagesOption.find(I => I.value === this.value.image);
 
       return image ? image.label : '-';
+    },
+
+    readyToUse() {
+      const val = String(this.value.volumeBackups?.readyToUse || false);
+
+      return ucFirst(val);
     },
 
     pvcsResource() {
@@ -299,7 +306,7 @@ export default {
       </div>
       <div
         v-if="isView"
-        class="col span-6"
+        class="col span-3"
       >
         <LabelValue
           :name="t('harvester.virtualMachine.volume.encryption')"
@@ -307,5 +314,19 @@ export default {
         />
       </div>
     </div>
+    <div class="row mb-20">
+      <div v-if="value.volumeBackups && isView" class="col span-3">
+        <LabelValue
+          :name="t('harvester.virtualMachine.volume.readyToUse')"
+          :value="readyToUse"
+        />
+      </div>
+    </div>
+    <Banner
+      v-if="value.volumeBackups && value.volumeBackups.error && value.volumeBackups.error.message"
+      color="error"
+      class="mb-20"
+      :label="value.volumeBackups.error.message"
+    />
   </div>
 </template>
