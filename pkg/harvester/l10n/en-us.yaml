@@ -467,6 +467,18 @@ harvester:
         label: Storage Scheduled
       storageMaximum:
         label: Storage Maximum
+      provisioner: Provisioner
+      lvmVolumeGroup:
+        label: Volume Group
+        create: Create New...
+      storage:
+        longhorn:
+          LonghornV1:
+            label: Longhorn V1 (CSI)
+          LonghornV2:
+            label: Longhorn V2 (CSI)
+        lvm:
+          label: LVM
     tags:
       label: Host Tags
       addLabel: Add Host Tag
@@ -1137,6 +1149,14 @@ harvester:
       label: Disk Selector
     storageClass:
       label: Storage Class
+      longhorn:
+        v1:
+          label: Longhorn V1 (CSI)
+        v2:
+          label: Longhorn V2 (CSI)
+        versionTooltip: Longhorn V2 is disabled for this node.
+      lvm:
+        label: LVM
     title: Storage Classes
     customize:
       volumeBindingMode:
@@ -1154,6 +1174,13 @@ harvester:
         no-options: No available tags, please add in the `Host > Storage` page
       migratable:
         label: Migratable
+      lvmVolumeGroupType:
+        label: Volume Group Type
+      lvmVolumeGroup:
+        label: Volume Group Name
+        no-options: No available Volume Groups, please add in the `Host > Storage` page
+      node:
+        label: Node
     allowedTopologies:
       title: Allowed Topologies
       tooltip: Allowed Topologies helps scheduling virtual machines on hosts which match all of below expressions.

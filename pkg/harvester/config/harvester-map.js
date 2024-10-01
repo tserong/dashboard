@@ -68,6 +68,7 @@ export const ADD_ONS = {
   RANCHER_LOGGING:                  'rancher-logging',
   RANCHER_MONITORING:               'rancher-monitoring',
   VM_IMPORT_CONTROLLER:             'vm-import-controller',
+  LVM_DRIVER:                       'lvm.driver.harvesterhci.io'
 };
 
 export const CSI_SECRETS = {
